@@ -1,6 +1,6 @@
 import Document, { Head, Main, NextScript } from "next/document";
 // Import styled components ServerStyleSheet
-import { ServerStyleSheet } from "styled-components";
+import { ServerStyleSheet, createGlobalStyle } from "styled-components";
 
 export default class MyDocument extends Document {
   static getInitialProps({ renderPage }) {
@@ -9,7 +9,12 @@ export default class MyDocument extends Document {
 
     // Step 2: Retrieve styles from components in the page
     const page = renderPage(App => props =>
-      sheet.collectStyles(<App {...props} />)
+      sheet.collectStyles(
+        <>
+          <GlobalStyle />
+          <App {...props} />
+        </>
+      )
     );
 
     // Step 3: Extract the styles as <style> tags
@@ -23,6 +28,11 @@ export default class MyDocument extends Document {
     return (
       <html>
         <Head>
+          <meta charSet="utf-8" />
+          <meta
+            name="viewport"
+            content="initial-scale=1.0, width=device-width"
+          />
           <title>My page</title>
           {/* Step 5: Output the styles in the head  */}
           {this.props.styleTags}
@@ -35,3 +45,14 @@ export default class MyDocument extends Document {
     );
   }
 }
+
+const GlobalStyle = createGlobalStyle`
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+    body{
+        
+    }
+`;
