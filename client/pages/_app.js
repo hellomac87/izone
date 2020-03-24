@@ -1,24 +1,21 @@
 import App from "next/app";
 import Head from "next/head";
+import { withRouter } from "next/router";
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Header from "../components/Header";
 
-export default class MyApp extends App {
-  static async getInitialProps({ Component, ctx }) {
-    let pageProps = {};
-
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
-    }
-
-    return { pageProps };
-  }
-
+class MyApp extends App {
   render() {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps, router } = this.props;
 
+    // 공통 레이아웃을 적용시키지 않을 url
+    const hasNotCommonLayoutUrls = ["/signup"];
+
+    if (hasNotCommonLayoutUrls.includes(router.pathname)) {
+      return <Component {...pageProps} />;
+    }
     return (
       <>
         <Head>
@@ -31,9 +28,8 @@ export default class MyApp extends App {
         </Head>
 
         <Header />
-        <CommonWrapper>
-          <Component {...pageProps} />
-        </CommonWrapper>
+
+        <Component {...pageProps} />
 
         <footer>footer</footer>
       </>
@@ -43,7 +39,4 @@ export default class MyApp extends App {
 
 MyApp.propTypes = {};
 
-const CommonWrapper = styled.div`
-  width: 100%;
-  margin-top: 60px;
-`;
+export default withRouter(MyApp);

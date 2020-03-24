@@ -3,18 +3,14 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 const Header = props => {
-  return <HeadWrapper>Header</HeadWrapper>;
+  return <StyledHeader>Header</StyledHeader>;
 };
 
-const HeadWrapper = styled.header`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+const StyledHeader = styled.header`
   width: 100%;
   height: 60px;
   background-color: #24292e;
-  color: #fff;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
