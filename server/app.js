@@ -1,5 +1,8 @@
 const express = require("express");
 const app = express();
+const path = require("path");
+const cors = require("cors");
+
 const port = 8080;
 const mongoose = require("mongoose");
 const config = require("./config/key");
