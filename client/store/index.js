@@ -6,6 +6,6 @@ export function* rootSaga() {
   yield all([authSaga()]);
 }
 
-const rootReducer = combineReducers({
-  authReducer,
+export const rootReducer = combineReducers({
+  auth: authReducer,
 });

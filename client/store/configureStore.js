@@ -10,9 +10,11 @@ const sagaMiddleware = createSagaMiddleware();
 
 const configureStore = (preLoadedState) => {
   const store = createStore(
-    createRootReducer(history), // root reducer with router state
-    preloadedState,
-    composeWithDevTools(applyMiddleware(sagaMiddleware)),
+    rootReducer, // root reducer with router state
+    preLoadedState,
+    process.env.NODE_ENV === 'production'
+      ? applyMiddleware(sagaMiddleware)
+      : composeWithDevTools(applyMiddleware(sagaMiddleware)),
   );
   sagaMiddleware.run(rootSaga);
   return store;
