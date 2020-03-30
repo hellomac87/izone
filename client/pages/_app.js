@@ -5,7 +5,7 @@ import { withRouter } from 'next/router';
 // import withRedux from 'next-redux-wrapper';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 import configureStore from 'store/configureStore';
 
 import Header from '../components/Header';
@@ -21,14 +21,18 @@ class MyApp extends App {
 
     if (hasNotCommonLayoutUrls.includes(router.pathname)) {
       return (
-        <Provider store={store}>
-          <Component {...pageProps} />
-        </Provider>
+        <>
+          <GlobalStyle />
+          <Provider store={store}>
+            <Component {...pageProps} />
+          </Provider>
+        </>
       );
     }
 
     return (
       <>
+        <GlobalStyle />
         <Head>
           <meta charSet="utf-8" />
           <meta
@@ -37,6 +41,7 @@ class MyApp extends App {
           />
           <title>My new cool app</title>
         </Head>
+
         <Provider store={store}>
           <Header />
           <Component {...pageProps} />
@@ -46,6 +51,14 @@ class MyApp extends App {
     );
   }
 }
+
+const GlobalStyle = createGlobalStyle`
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+  }
+`;
 
 MyApp.propTypes = {};
 
