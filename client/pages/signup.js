@@ -1,7 +1,9 @@
 import React, { useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { useImmer } from 'use-immer';
 import validator from 'validator';
-import PropTypes from 'prop-types';
+import { passwordRegx } from '../libs/regx';
+
 import styled from 'styled-components';
 import { Input } from 'libs/styled-common';
 
@@ -65,6 +67,32 @@ const Signup = (props) => {
     return true;
   }, [form, setVaildate]);
 
+  const onValidatePassword = useCallback(() => {
+    const { password } = form;
+
+    if (!password) {
+      setVaildate((draft) => {
+        draft.password.value = false;
+        draft.password.message = '비밀번호를 입력해주세요.';
+      });
+      return false;
+    }
+    if (!passwordRegx.test(password)) {
+      setVaildate((draft) => {
+        draft.password.value = false;
+        draft.password.message =
+          '특수문자,문자,숫자 포함 형태의 6~15자리로 입력해주세요.';
+      });
+      return false;
+    }
+
+    setVaildate((draft) => {
+      draft.password.value = true;
+      draft.password.message = '';
+    });
+    return true;
+  });
+
   const handleSubmit = useCallback(
     (e) => {
       e.preventDefault();
@@ -93,11 +121,12 @@ const Signup = (props) => {
 
         <InputElem>
           <Input
-            name="password"
             type="password"
+            name="password"
             placeholder="password"
             value={form.password || ''}
             onChange={onChangeForm}
+            onBlur={onValidatePassword}
           />
           {validate.password.value === false && (
             <ValidateMessage>{validate.password.message}</ValidateMessage>
@@ -106,8 +135,8 @@ const Signup = (props) => {
 
         <InputElem>
           <Input
+            type="password"
             name="password_confirm"
-            type="password_confirm"
             placeholder="password_confirm"
             value={form.password_confirm || ''}
             onChange={onChangeForm}
