@@ -91,7 +91,30 @@ const Signup = (props) => {
       draft.password.message = '';
     });
     return true;
-  });
+  }, [form, setVaildate]);
+
+  const onValidatePasswordConfirm = useCallback(() => {
+    const { password, password_confirm } = form;
+    if (!password_confirm) {
+      setVaildate((draft) => {
+        draft.password_confirm.value = false;
+        draft.password_confirm.message = '비밀번호 확인을 입력해주세요.';
+      });
+      return false;
+    }
+    if (password !== password_confirm) {
+      setVaildate((draft) => {
+        draft.password_confirm.value = false;
+        draft.password_confirm.message = '비밀번호가 일치하지 않습니다.';
+      });
+      return false;
+    }
+    setVaildate((draft) => {
+      draft.password_confirm.value = true;
+      draft.password_confirm.message = '';
+    });
+    return true;
+  }, [form, setVaildate]);
 
   const handleSubmit = useCallback(
     (e) => {
@@ -140,6 +163,7 @@ const Signup = (props) => {
             placeholder="password_confirm"
             value={form.password_confirm || ''}
             onChange={onChangeForm}
+            onBlur={onValidatePasswordConfirm}
           />
           {validate.password_confirm.value === false && (
             <ValidateMessage>
