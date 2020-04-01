@@ -6,6 +6,7 @@ import { passwordRegx } from '../libs/regx';
 
 import styled from 'styled-components';
 import { Input } from 'libs/styled-common';
+import api from '../api';
 
 const Signup = (props) => {
   const [form, setForm] = useImmer({
@@ -119,7 +120,9 @@ const Signup = (props) => {
   const handleSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      if (!onValidateEmail()) return;
+      api.post(`/auth/register`, {
+        test: 'test',
+      });
     },
     [form],
   );

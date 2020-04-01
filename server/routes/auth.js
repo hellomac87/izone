@@ -12,4 +12,8 @@ const { User } = require("../models/User");
 //   res.send("auth");
 // });
 
+router.post("/register", (req, res) => {
+  console.log(req.body);
+});
+
 module.exports = router;
