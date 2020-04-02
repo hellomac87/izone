@@ -120,9 +120,7 @@ const Signup = (props) => {
   const handleSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      api.post(`/auth/register`, {
-        test: 'test',
-      });
+      api.post(`/auth/register`, form);
     },
     [form],
   );

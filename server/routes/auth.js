@@ -13,7 +13,17 @@ const { User } = require("../models/User");
 // });
 
 router.post("/register", (req, res) => {
-  console.log(req.body);
+  const { email, password, password_confirm } = req.body;
+  if (!email)
+    res
+      .status(400)
+      .json({ success: false, message: "email은(는) 필수 항목입니다." });
+  if (!password)
+    res
+      .status(400)
+      .json({ success: false, message: "password은(는) 필수 항목입니다." });
+
+  res.status(200).json({ success: true });
 });
 
 module.exports = router;
