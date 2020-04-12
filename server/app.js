@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -9,15 +10,16 @@ const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const config = require("./config/key");
 
+mongoose.Promise = global.Promise; // Node의 Promise 를 사용하도록 설정
 const connect = mongoose
-  .connect(config.mongoURI, {
+  .connect(process.env.mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    useFindAndModify: false
+    useFindAndModify: false,
   })
   .then(() => console.log("MongoDB Connected..."))
-  .catch(err => console.log(err));
+  .catch((err) => console.log(err));
 
 app.use(cors());
 
@@ -31,6 +33,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use("/auth", require("./routes/auth"));
+app.use("/posts", require("./routes/post"));
 
 //use this to show the image you have in node js server to client (react js)
 //https://stackoverflow.com/questions/48914987/send-image-path-from-node-js-express-server-to-react-client
