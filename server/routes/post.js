@@ -23,15 +23,32 @@ router.post("/", async (req, res) => {
   });
 
   try {
-    const data = await post.save();
-    res.status(200).json({ success: true, data });
+    const result = await post.save();
+    res.status(200).json({ success: true, result });
   } catch (e) {
     console.log(e);
-    res.status(400).json({ success: false, message: e });
+    res.status(500);
   }
 });
 
-router.get("/:id", (req, res) => {});
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await Post.findById(id).exec();
+    res.status(200).json({
+      success: true,
+      post,
+    });
+    if (!post) {
+      res
+        .status(404)
+        .json({ success: false, message: "포스트가 존재하지 않습니다." });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500);
+  }
+});
 router.delete("/", (req, res) => {});
 router.put("/:id", (req, res) => {});
 
