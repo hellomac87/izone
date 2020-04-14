@@ -73,6 +73,25 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/", (req, res) => {});
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await Post.findByIdAndDelete(id).exec();
+
+    res.status(204).json({
+      success: true,
+      post,
+    });
+
+    if (!post) {
+      res
+        .status(404)
+        .json({ success: false, message: "포스트가 존재하지 않습니다." });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500);
+  }
+});
 
 module.exports = router;
