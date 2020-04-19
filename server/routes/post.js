@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const Post = require("../models/post");
+const Joi = require("joi");
+const {
+  Types: { ObjectId },
+} = require("mongoose");
 
 // const { auth } = require("../middleware/auth");
 
@@ -52,6 +56,36 @@ router.get("/:id", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
+
+  // TODO: ObjectId 검증 로직 추가하기
+
+  // TODO: Schema 검증 로직 추가하기
+
+  try {
+    const post = await Post.findByIdAndUpdate(id, req.body, {
+      new: true, // 업데이트 된 객체를 반환, 설정하지 않으면 업데이트 되기 전의 객체 반환
+      upsert: true, // 이 값을 넣어주면 데이터가 존재하지 않으면 새로 만들어줍니다
+    }).exec();
+
+    res.status(200).json({
+      success: true,
+      post,
+    });
+
+    if (!post) {
+      res
+        .status(404)
+        .json({ success: false, message: "포스트가 존재하지 않습니다." });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500);
+  }
+});
+
+router.patch("/:id", async (req, res) => {
+  const { id } = req.params;
+
   try {
     const post = await Post.findByIdAndUpdate(id, req.body, {
       new: true, // 업데이트 된 객체를 반환, 설정하지 않으면 업데이트 되기 전의 객체 반환
