@@ -13,7 +13,7 @@ const config = require("./config/key");
 
 mongoose.Promise = global.Promise; // Node의 Promise 를 사용하도록 설정
 const connect = mongoose
-  .connect(process.env.mongoURI, {
+  .connect(config.mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
